@@ -1,2 +1,8 @@
 # How-To
-Idea from &lt;How did they do that>. Implementation in Unity.
+Some game mechanics implementation in unity 2018.3.0f2.
+
+
+
+## Reference
+
+【How did they do that】
