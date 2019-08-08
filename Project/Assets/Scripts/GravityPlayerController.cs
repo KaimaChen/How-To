@@ -8,6 +8,7 @@ public class GravityPlayerController : MonoBehaviour
     public float mGravity = -9.8f;
     public float mJumpSpeed = 7f;
     public float mGroundedDistance = 0.6f;
+    public float mRotateSpeed = 4f;
 
     private float mSpeedY;
 
@@ -34,18 +35,23 @@ public class GravityPlayerController : MonoBehaviour
             }
             else // grounded
             {
-                if (Input.GetKeyDown(KeyCode.Space))
-                    mSpeedY = mJumpSpeed;
-                else
-                    mSpeedY = 0;
+                mSpeedY = 0;
             }
 
-            Vector3 moveY = hitInfo.normal * mSpeedY * Time.deltaTime;
+            if(distance <= mGroundedDistance + 0.1f) //0.1 means you can jump when near ground
+            {
+                if (Input.GetKeyDown(KeyCode.Space))
+                    mSpeedY = mJumpSpeed;
+            }
+            
+            Vector3 moveY = hitInfo.normal * mSpeedY * Time.deltaTime; //gravity direction is normal of the ground below
             transform.Translate(moveY, Space.World);
-        }
 
-        //rotate
-        Vector3 forward = Vector3.Cross(toGround, transform.right);
-        transform.rotation = Quaternion.LookRotation(forward, -toGround);
+            //rotate
+            Vector3 forward = Vector3.Cross(-hitInfo.normal, transform.right);
+            if (forward == Vector3.zero)
+                forward = transform.forward;
+            transform.rotation = Quaternion.Lerp(transform.rotation, Quaternion.LookRotation(forward, hitInfo.normal), mRotateSpeed * Time.deltaTime);
+        }
     }
 }
