@@ -44,7 +44,7 @@ public class GravityPlayerController : MonoBehaviour
                     mSpeedY = mJumpSpeed;
             }
             
-            Vector3 moveY = hitInfo.normal * mSpeedY * Time.deltaTime; //gravity direction is normal of the ground below
+            Vector3 moveY = hitInfo.normal * mSpeedY * Time.deltaTime; //gravity direction is -normal of the ground below
             transform.Translate(moveY, Space.World);
 
             //rotate
