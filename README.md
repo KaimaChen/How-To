@@ -5,9 +5,9 @@ Some game mechanics implementation in unity 2018.3.0f2.
 
 #### WalkOnPlanet
 
-![WalkOnSphere](.\README_Src\WalkOnSphere.gif)
+![WalkOnSphere](./README_Src/WalkOnSphere.gif)
 
-![WalkOnCube](.\README_Src\WalkOnCube.gif)
+![WalkOnCube](./README_Src/WalkOnCube.gif)
 
 ![MirrorObj](./README_Src/MirrorObj.gif)
 
