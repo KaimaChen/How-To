@@ -16,20 +16,25 @@ public class PortalTeleporter : MonoBehaviour
             Vector3 portalToPlayer = mPlayer.position - transform.position;
             float dotProduct = Vector3.Dot(transform.up, portalToPlayer);
 
-            // If this is true: The player has moved across the portal
-            if (dotProduct < 0f)
+            if (dotProduct < 0f) //穿过后才传送
             {
-                // Teleport him!
-                float rotationDiff = -Quaternion.Angle(transform.rotation, mExit.rotation);
-                rotationDiff += 180;
-                mPlayer.Rotate(Vector3.up, rotationDiff);
-
-                Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
-                mPlayer.position = mExit.position + positionOffset;
+                MakeTeleport(transform, mExit);
 
                 mIsInTeleporter = false;
             }
         }
+    }
+
+    void MakeTeleport(Transform from, Transform to)
+    {
+        Quaternion relativeDiff = to.rotation * Quaternion.Inverse(from.rotation);
+        relativeDiff *= Quaternion.Euler(0, 180, 0);
+
+        Vector3 positionOffset = mPlayer.position - from.position;
+        positionOffset = relativeDiff * positionOffset;
+
+        mPlayer.position = to.position + positionOffset;
+        mPlayer.rotation *= relativeDiff;
     }
 
     private void OnTriggerEnter(Collider other)
