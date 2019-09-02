@@ -2,8 +2,10 @@
 
 public class PortalTeleporter : MonoBehaviour
 {
+    private static PortalTeleporter sMovedTeleporter;
+
     public Transform mPlayer;
-    public Transform mTargetPortal;
+    public Transform mExit;
 
     private bool mIsInTeleporter;
 
@@ -18,12 +20,12 @@ public class PortalTeleporter : MonoBehaviour
             if (dotProduct < 0f)
             {
                 // Teleport him!
-                float rotationDiff = -Quaternion.Angle(transform.rotation, mTargetPortal.rotation);
+                float rotationDiff = -Quaternion.Angle(transform.rotation, mExit.rotation);
                 rotationDiff += 180;
                 mPlayer.Rotate(Vector3.up, rotationDiff);
 
                 Vector3 positionOffset = Quaternion.Euler(0f, rotationDiff, 0f) * portalToPlayer;
-                mPlayer.position = mTargetPortal.position + positionOffset;
+                mPlayer.position = mExit.position + positionOffset;
 
                 mIsInTeleporter = false;
             }
@@ -32,6 +34,15 @@ public class PortalTeleporter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //if (other.tag != "Player" || this == sMovedTeleporter)
+        //{
+        //    Debug.Log(other.tag + ", " + this.GetInstanceID() + ", " + (sMovedTeleporter == null ? "null" : sMovedTeleporter.GetInstanceID().ToString()));
+        //    return;
+        //}
+
+        //Debug.Log("Teleport" + mPlayer.position + ", " + mTargetTeleporter.transform.position);
+        //mPlayer.position = mTargetTeleporter.transform.position;
+
         if (other.tag == "Player")
             mIsInTeleporter = true;
     }
