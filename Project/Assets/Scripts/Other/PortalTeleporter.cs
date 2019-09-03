@@ -2,8 +2,6 @@
 
 public class PortalTeleporter : MonoBehaviour
 {
-    private static PortalTeleporter sMovedTeleporter;
-
     public Transform mPlayer;
     public Transform mExit;
 
@@ -14,9 +12,11 @@ public class PortalTeleporter : MonoBehaviour
         if (mIsInTeleporter)
         {
             Vector3 portalToPlayer = mPlayer.position - transform.position;
-            float dotProduct = Vector3.Dot(transform.up, portalToPlayer);
+            float dotProduct = Vector3.Dot(transform.up, portalToPlayer); //这里假设传送门的Y轴朝前
 
-            if (dotProduct < 0f) //穿过后才传送
+            //>0表示在门前，所以这里表示穿过后才传送
+            //传送后会在另一个门的前面，所以不会来回传
+            if (dotProduct < 0f)
             {
                 MakeTeleport(transform, mExit);
 
@@ -39,15 +39,6 @@ public class PortalTeleporter : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //if (other.tag != "Player" || this == sMovedTeleporter)
-        //{
-        //    Debug.Log(other.tag + ", " + this.GetInstanceID() + ", " + (sMovedTeleporter == null ? "null" : sMovedTeleporter.GetInstanceID().ToString()));
-        //    return;
-        //}
-
-        //Debug.Log("Teleport" + mPlayer.position + ", " + mTargetTeleporter.transform.position);
-        //mPlayer.position = mTargetTeleporter.transform.position;
-
         if (other.tag == "Player")
             mIsInTeleporter = true;
     }

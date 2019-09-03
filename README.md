@@ -13,13 +13,24 @@ Some game mechanics implementation in unity 2018.3.0f2.
 
 #### Portals
 
+![WalkOnSphere](./README_Src/Portal.gif)
 
+(Portal note in ./Note/Portal.md)
 
 
 
 #### MirrorObj
 
 ![MirrorObj](./README_Src/MirrorObj.gif)
+
+
+
+## TODO
+
+* FEZ
+* 纪念碑谷
+
+
 
 ## Reference
 
