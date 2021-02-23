@@ -5,7 +5,7 @@ Some game mechanics implementation in unity 2018.3.0f2.
 
 #### LOL Qiana's skill R
 
-![](./Note/Qiana.gif)
+![](./README_Src/Qiana.gif)
 
 
 
