@@ -3,6 +3,12 @@ Some game mechanics implementation in unity 2018.3.0f2.
 
 
 
+#### LOL Qiana's skill R
+
+![](./Note/Qiana.gif)
+
+
+
 #### WalkOnPlanet
 
 ![WalkOnSphere](./README_Src/WalkOnSphere.gif)
@@ -29,6 +35,9 @@ Some game mechanics implementation in unity 2018.3.0f2.
 
 * FEZ
 * 纪念碑谷
+* 影子跟随
+* Braid的时间回退
+* 放大缩小通道
 
 
 
