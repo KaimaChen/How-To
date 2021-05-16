@@ -1,46 +1,51 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ScaleTunnel : MonoBehaviour
 {
-    [SerializeField] Vector3 mApex;
-    [SerializeField] float mFov;
-    [SerializeField] float mNear;
-    [SerializeField] float mFar;
-    [SerializeField] float mAspect;
-    
-    void Start()
+    public Transform m_minEnd;
+    public Transform m_maxEnd;
+    public float m_minScale = 0.5f;
+
+    private Transform m_player;
+    private Vector3 m_originScale;
+    private float m_originHeight;
+    private bool m_makeSmall;
+
+    private void Update()
     {
-        
+        if (m_player == null) return;
+
+        float minZ = m_minEnd.localPosition.z;
+        float maxZ = m_maxEnd.localPosition.z;
+        float targetZ = transform.InverseTransformPoint(m_player.position).z;
+        float percent = (targetZ - minZ) / (maxZ - minZ);
+        percent = Mathf.Clamp01(percent);
+        float scale = m_makeSmall ? Mathf.Lerp(m_minScale, 1, percent) : Mathf.Lerp(1, 1 / m_minScale, percent);
+
+        m_player.localScale = m_originScale * scale;
+        var controller = m_player.GetComponent<CharacterController>();
+        controller.height = m_originHeight * scale;
+        var pos = m_player.transform.position;
+        pos.y = controller.height / 2f + controller.skinWidth;
+        m_player.transform.position = pos;
     }
 
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        GameObject player = GameObject.FindGameObjectWithTag("Player");
-        if(player != null)
-            Scale(player.transform);
+        if (other.gameObject.CompareTag("Player"))
+        {
+            m_player = other.transform;
+            m_originScale = m_player.localScale;
+            m_originHeight = m_player.GetComponent<CharacterController>().height;
+
+            var pos = m_player.position;
+            m_makeSmall = (pos - m_maxEnd.position).sqrMagnitude < (pos - m_minEnd.position).sqrMagnitude;
+        }
     }
 
-    private void Scale(Transform target)
+    private void OnTriggerExit(Collider other)
     {
-        //Vector3 smallToBig = mBigPos - mSmallPos;
-        //float length = smallToBig.magnitude;
-
-        //Vector3 smallToPos = target.position - mSmallPos;
-        //float project = Vector3.Dot(smallToPos, smallToBig);
-        //if (project < 0 || project > length)
-        //    return;
-
-        //float ratio = project / length;
-        //float smallScale = mSmallRect.height / mBigRect.height;
-        //float scale = Mathf.Lerp(smallScale, 1, ratio);
-        //target.localScale = new Vector3(scale, scale, scale);
-    }
-
-    private void OnDrawGizmos()
-    {
-        //Gizmos.color = new Color(1, 0, 0, 0.1f);
-        Gizmos.DrawFrustum(mApex, mFov, mFar, mNear, mAspect);
+        if (m_player == other.transform)
+            m_player = null;
     }
 }

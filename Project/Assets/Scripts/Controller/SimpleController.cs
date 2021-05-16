@@ -3,17 +3,19 @@
 [RequireComponent(typeof(CharacterController))]
 public class SimpleController : MonoBehaviour
 {
-    public float mSpeed = 10;
-
-    [SerializeField] private Camera mCamera;
-    private readonly MouseLook mMouseLook = new MouseLook();
+    public float m_speed = 10;
+    
+    [SerializeField] private Camera m_camera;
+    private readonly MouseLook m_mouseLook = new MouseLook();
+    private CharacterController m_controller;
 
     void Start()
     {
-        mMouseLook.Init(transform, mCamera.transform);
+        m_mouseLook.Init(transform, m_camera.transform);
+        m_controller = GetComponent<CharacterController>();
     }
 
-    void Update()
+    protected virtual void Update()
     {
         RotateView();
 
@@ -22,16 +24,16 @@ public class SimpleController : MonoBehaviour
         float vertical = Input.GetAxis("Vertical");
         if(horizontal != 0 || vertical != 0)
         {
-            float x = horizontal * mSpeed * Time.deltaTime;
-            float z = vertical * mSpeed * Time.deltaTime;
+            float x = horizontal * m_speed * Time.deltaTime;
+            float z = vertical * m_speed * Time.deltaTime;
             Vector3 motion = transform.right * x + transform.forward * z;
 
-            transform.Translate(motion, Space.World);
+            m_controller.Move(motion);
         }
     }
 
     private void RotateView()
     {
-        mMouseLook.LookRotation(transform, mCamera.transform);
+        m_mouseLook.LookRotation(transform, m_camera.transform);
     }
 }
