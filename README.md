@@ -43,7 +43,6 @@ Some game mechanics implementation in unity 2018.3.0f2.
 * 纪念碑谷
 * 影子跟随
 * Braid的时间回退
-* 放大缩小通道
 
 
 
